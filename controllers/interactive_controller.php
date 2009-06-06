@@ -25,7 +25,7 @@ class InteractiveController extends InteractiveAppController {
       return;
     }
     
-    $cmds = explode("\n", $this->data['Interactive']['cmd']);
+    $cmds = explode(";", $this->data['Interactive']['cmd']);
     
     $results = array();
     foreach($cmds as $cmd) {
