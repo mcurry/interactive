@@ -1,0 +1,16 @@
+/*
+ * Interactive panel for the CakePHP DebugKit
+ * Copyright (c) 2009 Matt Curry
+ * www.PseudoCoder.com
+ * http://github.com/mcurry/interactive
+ *
+ * @author      Matt Curry <matt@pseudocoder.com>
+ * @license     MIT
+ *
+ */
+
+/* About */
+This plugin adds a custom panel to the CakePHP DebugKit allowing for easy interactions with your app
+
+/* Instructions */
+Coming Soon...
