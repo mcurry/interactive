@@ -1,15 +1,12 @@
 <?php
-App::import('Controller', 'Interactive.Interactive');
-
 class InteractiveTestCase extends CakeTestCase {
   var $Interactive = null;
 	var $fixtures = array('core.post');
   
   function startCase() {
-    $this->Interactive = new InteractiveController();
-    $this->Interactive->constructClasses();
-		$this->Interactive->InteractiveQuery->useDbConfig  = 'test_suite';
+    $this->Interactive = ClassRegistry::init('Interactive.Interactive');
 		$this->Interactive->objectCache = false;
+		$this->Interactive->setDataSource('test_suite');
   }
 	
 	function startTest() {
@@ -17,7 +14,7 @@ class InteractiveTestCase extends CakeTestCase {
 	}
   
   function testInstance() {
-    $this->assertTrue(is_a($this->Interactive, 'InteractiveController'));
+    $this->assertTrue(is_a($this->Interactive, 'Interactive'));
   }
   
   function testFindCmdTypeClass() {

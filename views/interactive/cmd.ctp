@@ -1,18 +1,19 @@
 <table>
   <?php
-    foreach($results as $cmd => $result) {
-      echo '<strong>' . $cmd . '</strong><br />';
-      if(is_array($result)) {
-        echo $toolbar->makeNeatArray($result);
+    foreach($results as $result) {
+      echo '<strong>' . $result['cmd'] . '</strong><br />';
+      if(is_array($result['output'])) {
+        echo $toolbar->makeNeatArray($result['output']);
       } else {
-        if(is_bool($result)) {
-          $result = ife($result, 'true', 'false');
+        if(is_bool($result['output'])) {
+          $result['output'] = ife($result['output'], 'true', 'false');
         }
 
-				if($raw) {
-					echo htmlentities($result) . '<br />';
+				if($result['raw']) {
+					echo htmlentities($result['output']) . '<br />';
 				}
-        echo $result . '<br /><br />';
+				
+        echo $result['output'] . '<br /><br />';
       }
     }
   ?>
