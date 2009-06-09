@@ -5,17 +5,25 @@ class InteractiveShell extends Shell {
 	function main() {
 		$this->out('Interactive Shell');
 		$this->hr();
-
-
-		$cmd = $this->in('Enter Command ("Q" to exit):');
-		if(strtoupper($cmd) == 'Q') {
-			exit(0);
+		
+		$cmds = array();
+		if(!empty($this->args)) {
+			$cmds = am(explode(';', implode(' ', $this->args)), array('Q'));
+		} else {
+			$cmds = array($this->in('Enter Command ("Q" to exit):'));
 		}
 
-		$results = $this->Interactive->process($cmd);
-		$this->__display($results);
+		foreach($cmds as $cmd) {
+			if(strtoupper($cmd) == 'Q') {
+				exit(0);
+			}
+	
+			$results = $this->Interactive->process($cmd);
+			$this->__display($results);
+			
+			echo "\n";
+		}
 		
-		echo "\n";
 		$this->hr();
 		$this->main();
 	}

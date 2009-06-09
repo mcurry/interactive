@@ -15,7 +15,7 @@ class InteractiveController extends InteractiveAppController {
 			return $this->redirect($this->referer());
 		}
     
-    //Configure::write('debug', 0);
+    Configure::write('debug', 0);
     
     if(empty($this->data['Interactive']['cmd'])) {
       return;
