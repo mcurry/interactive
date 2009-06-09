@@ -10,7 +10,49 @@
  */
 
 /* About */
-This plugin adds a custom panel to the CakePHP DebugKit allowing for easy interactions with your app
+This plugin adds easy interactions with your CakePHP app using the console or through a custom panel for the CakePHP DebugKit.  
+It handles simple PHP commands, SQL queries and PHP using your Cake objects.
+
+/* Examples */
+10 % 4 (returns 2)
+is_array(49) (returns false)
+SELECT id FROM users WHERE email = 'test@test.com' (retuns the id of the matching record)
+User::findByEmail('test@test.com') (returns the entire matching user record)
+
+/* Power Usage */
+When using in the DebugKit panel you can stack commands, just make sure to end each with a ";" as you would in your code.
+
+If you're having trouble getting results for a particular command and can't figure out why try turning on debug as the first command:
+Configure::write('debug', 2);
+User::findByEmail('test@test.com');
+
+/* Warning */
+There isn't any sort of error detection or validation on the input.  Also there isn't any pagination for long result sets.  If you enter in a query that returns a million records, you're going to get a million records.
+
+You can't declare a variable and use it across commands. For example this doesn't work:
+$i = 10;
+$i ++;
 
 /* Instructions */
-Coming Soon...
+1) Download the plugin to /app/plugin/interactive
+
+/* Console Instructions */
+1) Run the cake console passing the "interactive" shell
+   from /app: ../cake/console/cake interactive
+
+2) Enter commands as needed.  Enter 'Q' to exit.  
+
+3) You can also commands as parameters.  The interactive shell will run the command and exit
+   ../cake/console/cake interactive Post::find('first')
+   
+/* DebugKit Instructions (version 1.1) */
+1) You need to patch the DebugKit to include the fix for defect #21 (http://thechaw.com/debug_kit/tickets/view/21).
+   The fix is 3 additional lines to /plugins/debug_kit/controllers/components/toolbar.php
+   http://thechaw.com/debug_kit/commits/view/ba5a45f930e3f2b65cf779155c65048c660110c5
+   
+2) In your AppController include the panel (as well as all the default panels):
+   var $components = array('DebugKit.Toolbar' => array('history', 'session', 'request', 'sqlLog', 'timer', 'log', 'variables', 'Interactive.interactive');
+
+/* DebugKit Instructions (trunk) */
+1) Include the panel:
+   $components = array('DebugKit.Toolbar' => array('panels' => array('Interactive.interactive'));
