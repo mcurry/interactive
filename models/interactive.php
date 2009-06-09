@@ -32,6 +32,7 @@ class Interactive extends InteractiveAppModel {
 	}
 
 	function __classCall($cmd) {
+		$cmd = str_replace('$this->', '', $cmd);
 		list($className, $function) = preg_split('/(::|->)/', $cmd, 2);
 		$Class = $this->__getClass($className);
 
