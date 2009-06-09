@@ -122,7 +122,7 @@ class InteractiveTestCase extends CakeTestCase {
 	function testClassCallComponent() {
 		Configure::write('debug', 0);
 		Configure::write('Security.salt', 'fc4a7a2d16ed61344ff95c87674620c4ece9cea1');
-		$result = $this->Interactive->__classCall('Auth::password("test")');
+		$result = $this->Interactive->__classCall('AuthComponent::password("test")');
 		$this->assertEqual('cfc21a50c1f69eabdb6687d7f2b33891865f69bb', $result);
 		Configure::write('debug', 2);
 	}

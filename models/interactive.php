@@ -4,10 +4,11 @@ class Interactive extends InteractiveAppModel {
 	var $objectCache = true;
 	var $objectPath = null;
 	var $raw = false;
-	
+	var $type = null;
+
 	function process($cmds) {
 		$cmds = explode(";", $cmds);
-		
+
 		$results = array();
 		foreach($cmds as $cmd) {
 			$this->raw = false;
@@ -23,10 +24,10 @@ class Interactive extends InteractiveAppModel {
 			$func = sprintf('__%sCall', $type);
 			$output = $this-> {$func}($cmd);
 			$results[] = array('cmd' => $cmd,
-												 'raw' => $this->raw,
-												 'output' => $output);
+			                   'raw' => $this->raw,
+			                   'output' => $output);
 		}
-		
+
 		return $results;
 	}
 
@@ -64,9 +65,15 @@ class Interactive extends InteractiveAppModel {
 	}
 
 	function __getClass($className) {
-		$className = $this->__fixClassName($className);
-		$types = array('model', 'controller', 'helper', 'component');
+		$this->type = null;
 		$classType = false;
+		$className = $this->__fixClassName($className);
+
+		if ($this->type) {
+			$types = array($this->type);
+		} else {
+			$types = array('model', 'helper');
+		}
 
 		foreach($types as $type) {
 			$objects = Configure::listObjects($type, $this->objectPath, $this->objectCache);
@@ -108,6 +115,14 @@ class Interactive extends InteractiveAppModel {
 	}
 
 	function __fixClassName($className) {
+		if (stripos($className, 'component') !== false) {
+			$this->type = 'component';
+		}
+
+		if (stripos($className, 'controller') !== false) {
+			$this->type = 'controller';
+		}
+
 		return ucfirst(preg_replace('/(\$|controller|component)/i', '', $className));
 	}
 
