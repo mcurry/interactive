@@ -100,7 +100,7 @@ class Interactive extends InteractiveAppModel {
 				$Class->startup($Controller);
 				return $Class;
 			case 'helper':
-				$this->showRaw = true;
+				$this->raw = true;
 				App::import('Controller', 'Controller');
 				$Controller = new Controller();
 				$Controller->helpers[] = $className;
