@@ -48,7 +48,8 @@
 				}
 			});
 			
-			remote.send(this.action, "data[Interactive][cmd]=" + document.getElementById("InteractiveCmd").value);
+			remote.send(this.action, "data[Interactive][cmd]="
+                  + encodeURIComponent(document.getElementById("InteractiveCmd").value));
 		};
 		
 		return {
