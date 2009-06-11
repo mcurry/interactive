@@ -1,5 +1,5 @@
 <?php
-  echo $form->create('Interactive', array('url' => array('controller' => 'interactive', 'action' => 'cmd'), 'id' => 'interactive-form'));
+  echo $form->create('Interactive', array('url' => array('admin' => false, 'controller' => 'interactive', 'action' => 'cmd'), 'id' => 'interactive-form'));
   echo $form->input('cmd', array('type' => 'textarea', 'label' => false, 'cols' => '100'));
 	echo $html->image('/interactive/img/ajax-loader.gif', array('id' => 'interactive-indicator'));
   echo $form->end('Execute');
