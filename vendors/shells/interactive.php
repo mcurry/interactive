@@ -20,7 +20,7 @@ class InteractiveShell extends Shell {
     if (!empty($this->args)) {
       $cmds = am(explode(';', implode(' ', $this->args)), array('Q'));
     } else {
-      $cmds = array($this->in('Enter Command ("Q" to quit, "?" for help):'));
+      $cmds = array($this->in('Enter Command ("q" to quit, "?" for help):'));
     }
 
     foreach($cmds as $cmd) {
