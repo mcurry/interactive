@@ -6,6 +6,12 @@ class InteractiveController extends InteractiveAppController {
 	
 	var $helpers = array('DebugKit.Toolbar' => array('output' => 'DebugKit.HtmlToolbar'));
 	
+	function beforeFilter() {
+		if(!empty($this->Security)) {
+			$this->Security->validatePost = false;
+		}
+	}
+	
   function cmd() {
 		//the debug_kit toolbar component, which is probably included in AppController
 		//forces the output to be FirePHP, which means we can't use makeNeatArray
@@ -24,6 +30,5 @@ class InteractiveController extends InteractiveAppController {
 		$results = $this->Interactive->process($this->data['Interactive']['cmd']);
     $this->set('results', $results);
   }
-  
-
 }
+?>
