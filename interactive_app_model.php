@@ -2,3 +2,4 @@
 class InteractiveAppModel extends AppModel {
 	
 }
+?>

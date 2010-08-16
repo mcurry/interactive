@@ -76,8 +76,18 @@ class Interactive extends InteractiveAppModel {
 			$types = array('model', 'helper');
 		}
 
+        $class = $className;
+        if (strpos($className, '.') !== false) {
+            list($plugin, $className) = explode('.', $className);
+            $this->objectPath = App::pluginPath($plugin);
+        }
+
 		foreach($types as $type) {
-			$objects = Configure::listObjects($type, $this->objectPath, $this->objectCache);
+			$objects = Configure::listObjects(
+                $type,
+                $this->objectPath ? $this->objectPath . Inflector::pluralize($type) . DS : null,
+                $this->objectCache
+            );
 			if (in_array($className, $objects)) {
 				$classType = $type;
 				break;
@@ -86,15 +96,15 @@ class Interactive extends InteractiveAppModel {
 
 		switch ($classType) {
 			case 'model':
-				return ClassRegistry::init($className);
+				return ClassRegistry::init($class);
 			case 'controller':
-				App::import('Controller', $className);
+				App::import('Controller', $class);
 				$className = $className . 'Controller';
 				return new $className();
 			case 'component':
 				App::import('Controller', 'Controller');
 				$Controller = new Controller();
-				App::import('Component', $className);
+				App::import('Component', $class);
 				$className = $className . 'Component';
 				$Class = new $className();
 				$Class->initialize($Controller);
@@ -104,7 +114,7 @@ class Interactive extends InteractiveAppModel {
 				$this->raw = true;
 				App::import('Controller', 'Controller');
 				$Controller = new Controller();
-				$Controller->helpers[] = $className;
+				$Controller->helpers[] = $class;
 				App::import('View', 'View');
 				$View =& new View($Controller);
 				$loaded = array();
