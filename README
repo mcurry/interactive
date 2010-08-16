@@ -5,10 +5,13 @@
  * http://github.com/mcurry/interactive
  *
  * @author      Matt Curry <matt@pseudocoder.com>
+ * @author      Sandu Lungu <sandu@lungu.info>
  * @license     MIT
  *
  */
 
+This version of the plugin is compatible with CakePHP 1.3 and the latest DebugKit
+ 
 /* About */
 This plugin adds easy interactions with your CakePHP app using the console or through a custom panel for the CakePHP DebugKit.  
 It handles simple PHP commands, SQL queries and PHP using your Cake objects.
@@ -25,6 +28,7 @@ When using in the DebugKit panel you can stack commands, just make sure to end e
 If you're having trouble getting results for a particular command and can't figure out why try turning on debug as the first command:
 Configure::write('debug', 2);
 User::findByEmail('test@test.com');
+Facebook.Page::findByEmail('test@test.com'); // here we use a plugin
 
 /* Warning */
 There isn't any sort of error detection or validation on the input.  Also there isn't any pagination for long result sets.  If you enter in a query that returns a million records, you're going to get a million records.
@@ -44,14 +48,6 @@ $i ++;
 
 3) You can also commands as parameters.  The interactive shell will run the command and exit
    ../cake/console/cake interactive Post::find('first')
-   
-/* DebugKit Instructions (version 1.1) */
-1) You need to patch the DebugKit to include the fix for defect #21 (http://thechaw.com/debug_kit/tickets/view/21).
-   The fix is 3 additional lines to /plugins/debug_kit/controllers/components/toolbar.php
-   http://thechaw.com/debug_kit/commits/view/ba5a45f930e3f2b65cf779155c65048c660110c5
-   
-2) In your AppController include the panel (as well as all the default panels):
-   var $components = array('DebugKit.Toolbar' => array('history', 'session', 'request', 'sqlLog', 'timer', 'log', 'variables', 'Interactive.interactive');
 
 /* DebugKit Instructions (trunk) */
 1) Include the panel:
