@@ -1,5 +1,5 @@
 <?php
-class InteractiveController extends InteractiveAppController {
+class InteractiveController extends Controller {
 	var $name = 'Interactive';
   var $uses = array('Interactive.Interactive');
 	var $components = array('RequestHandler');
