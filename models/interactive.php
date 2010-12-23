@@ -104,6 +104,7 @@ class Interactive extends InteractiveAppModel {
 			case 'component':
 				App::import('Controller', 'Controller');
 				$Controller = new Controller();
+				$Controller->params['action'] = '';
 				App::import('Component', $class);
 				$className = $className . 'Component';
 				$Class = new $className();

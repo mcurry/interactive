@@ -83,21 +83,29 @@ class InteractiveTestCase extends CakeTestCase {
 		$result = $this->Interactive->__fixClassName('$TestsAppsPostsController');
 		$this->assertEqual('TestsAppsPosts', $result);
 	}
-	
+
+	function _setPath($type, $path) {
+		if (version_compare(Configure::version(), '1.3') > 0) {
+			App::build(array(Inflector::pluralize($type) => (array)$path));
+			$this->Interactive->objectPath = dirname($path) . DS;
+		} else {
+			Configure::write(Inflector::singularize($type) . 'Paths', (array)$path);
+			$this->Interactive->objectPath = $path;
+		}
+	}
+
 	function testGetClass() {
 		$result = $this->Interactive->__getClass('Html');
 		$this->assertTrue(is_a($result, 'HtmlHelper'));
-		
+
 		$result = $this->Interactive->__getClass('Form');
 		$this->assertTrue(is_a($result->Html, 'HtmlHelper'));
-		
-		$this->Interactive->objectPath = ROOT . DS . CAKE_TESTS . 'test_app' . DS . 'models';
-		Configure::write('modelPaths', array(ROOT . DS . CAKE_TESTS . 'test_app' . DS . 'models'));
+
+		$this->_setPath('model', ROOT . DS . CAKE_TESTS . 'test_app' . DS . 'models');
 		$result = $this->Interactive->__getClass('Post');
 		$this->assertTrue(is_a($result, 'Post'));
-	
-		Configure::write('controllerPaths', array(ROOT . DS . CAKE_TESTS . 'test_app' . DS . 'controllers'));
-		$this->Interactive->objectPath = ROOT . DS . CAKE_TESTS . 'test_app' . DS . 'controllers';
+
+		$this->_setPath('controller', ROOT . DS . CAKE_TESTS . 'test_app' . DS . 'controllers');
 		$result = $this->Interactive->__getClass('TestsAppsPostsController');
 		$this->assertTrue(is_a($result, 'TestsAppsPostsController'));
 	}
@@ -108,13 +116,12 @@ class InteractiveTestCase extends CakeTestCase {
 		$this->assertEqual($expected, $result);
 		
 		$result = $this->Interactive->__classCall('$form->input("Article.title")');
-		$expected = '<div class="input text"><label for="ArticleTitle">Title</label><input name="data[Article][title]" type="text" value="" id="ArticleTitle" /></div>';
-		$this->assertEqual($expected, $result);
+		$expected = '!' . preg_quote('<div class="input text"><label for="ArticleTitle">Title</label><input name="data[Article][title]" type="text"', '!') . '( value="")?' . preg_quote(' id="ArticleTitle" /></div>') . '!';
+		$this->assertPattern($expected, $result);
 	}
 	
 	function testClassCallController() {
-		Configure::write('controllerPaths', array(ROOT . DS . CAKE_TESTS . 'test_app' . DS . 'controllers'));
-		$this->Interactive->objectPath = ROOT . DS . CAKE_TESTS . 'test_app' . DS . 'controllers';
+		$this->_setPath('controller', ROOT . DS . CAKE_TESTS . 'test_app' . DS . 'controllers');
 		$result = $this->Interactive->__classCall('$TestsAppsPostsController->uses');
 		$this->assertEqual(array('Post'), $result);
 	}
@@ -133,11 +140,9 @@ class InteractiveTestCase extends CakeTestCase {
 	}
 	
 	function testClassCallModel() {
-		$this->Interactive->objectPath = ROOT . DS . CAKE_TESTS . 'test_app' . DS . 'models';
-		Configure::write('modelPaths', array(ROOT . DS . CAKE_TESTS . 'test_app' . DS . 'models'));
+		$this->_setPath('model', ROOT . DS . CAKE_TESTS . 'test_app' . DS . 'models');
 		$result = $this->Interactive->__classCall('Post::find("all")');
 		$this->assertEqual(3, count($result));
 		$this->assertEqual('First Post', $result[0]['Post']['title']);
 	}
 }
-?>
