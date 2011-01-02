@@ -1,3 +1,5 @@
+<h2> <?php __d('interactive', 'Interactive Panel'); ?></h2>
+
 <?php
 	echo $form->create('Interactive', array(
 		'url' => array(
