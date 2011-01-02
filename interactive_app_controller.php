@@ -2,4 +2,3 @@
 class InteractiveAppController extends Controller {
 	
 }
-?>
