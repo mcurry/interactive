@@ -1,8 +1,22 @@
+<h2> <?php __d('interactive', 'Interactive Panel'); ?></h2>
+
 <?php
-  echo $form->create('Interactive', array('url' => array('admin' => false, 'plugin' => 'interactive', 'controller' => 'interactive', 'action' => 'cmd'), 'id' => 'interactive-form'));
-  echo $form->input('cmd', array('type' => 'textarea', 'label' => false, 'cols' => '100'));
+	echo $form->create('Interactive', array(
+		'url' => array(
+			'admin' => false,
+			'plugin' => 'interactive',
+			'controller' => 'interactive',
+			'action' => 'cmd'
+		),
+		'id' => 'interactive-form'
+	));
+	echo $form->input('Interactive.cmd', array(
+		'cols' => '100',
+		'label' => false,
+		'type' => 'textarea'
+	));
 	echo $html->image('/interactive/img/ajax-loader.gif', array('id' => 'interactive-indicator'));
-  echo $form->end('Execute');
+	echo $form->end('Execute');
 ?>
 <br />
 <div id="interactive-results"></div>
@@ -16,7 +30,7 @@
 				Toolbar = DEBUGKIT.toolbar,
 				results = document.getElementById('interactive-results');
 				indicator = document.getElementById('interactive-indicator');
-			
+
 		var showResults = function (response) {
 			Element.hide(indicator);
 			results.innerHTML = response.response.text;
@@ -28,11 +42,11 @@
 
 			Toolbar.makeNeatArray(lists);
 		};
-		
+
 		function interactivePanelExectute (event) {
 			Element.show(indicator);
 			event.preventDefault();
-			
+
 			var remote = new Request({
 				method : 'POST',
 				headers : {
@@ -47,11 +61,11 @@
 					alert('Intereactive session failed');
 				}
 			});
-			
+
 			remote.send(this.action, "data[Interactive][cmd]="
-                  + encodeURIComponent(document.getElementById("InteractiveCmd").value));
+				+ encodeURIComponent(document.getElementById("InteractiveCmd").value));
 		};
-		
+
 		return {
 			init : function () {
 				Element.hide(indicator);
@@ -59,6 +73,6 @@
 			}
 		};
 	}();
-		
+
 	DEBUGKIT.loader.register(DEBUGKIT.interactivePanel);
 </script>

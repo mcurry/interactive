@@ -22,10 +22,12 @@ class Interactive extends InteractiveAppModel {
 			}
 
 			$func = sprintf('__%sCall', $type);
-			$output = $this-> {$func}($cmd);
-			$results[] = array('cmd' => $cmd,
-			                   'raw' => $this->raw,
-			                   'output' => $output);
+			$output = $this->{$func}($cmd);
+			$results[] = array(
+				'cmd' => $cmd,
+				'raw' => $this->raw,
+				'output' => $output
+			);
 		}
 
 		return $results;
@@ -76,18 +78,18 @@ class Interactive extends InteractiveAppModel {
 			$types = array('model', 'helper');
 		}
 
-        $class = $className;
-        if (strpos($className, '.') !== false) {
-            list($plugin, $className) = explode('.', $className);
-            $this->objectPath = App::pluginPath($plugin);
-        }
+		$class = $className;
+		if (strpos($className, '.') !== false) {
+			list($plugin, $className) = explode('.', $className);
+			$this->objectPath = App::pluginPath($plugin);
+		}
 
 		foreach($types as $type) {
 			$objects = Configure::listObjects(
-                $type,
-                $this->objectPath ? $this->objectPath . Inflector::pluralize($type) . DS : null,
-                $this->objectCache
-            );
+				$type,
+				$this->objectPath ? $this->objectPath . Inflector::pluralize($type) . DS : null,
+				$this->objectCache
+			);
 			if (in_array($className, $objects)) {
 				$classType = $type;
 				break;
@@ -149,5 +151,5 @@ class Interactive extends InteractiveAppModel {
 
 		return 'code';
 	}
+
 }
-?>
