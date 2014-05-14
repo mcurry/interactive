@@ -10,7 +10,7 @@
 				}
 			} else {
 				if (is_bool($result['output'])) {
-					$result['output'] = (!empty($result['output']) ? 'true' : 'false';
+					$result['output'] = (!empty($result['output'])) ? 'true' : 'false';
 				}
 
 				if ($result['raw']) {
